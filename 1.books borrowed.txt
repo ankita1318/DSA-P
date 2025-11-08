@@ -1,0 +1,71 @@
+borrow_records = {
+    "member1": ["Book A", "Book B"],
+    "member2": [],
+    "member3": ["Book A", "Book C", "Book B"],
+    "member4": ["Book C"],
+    "member5": ["Book A"]
+}
+
+def compute_average_borrowed(records):
+    total_books = sum(len(books) for books in records.values())
+    total_members = len(records)
+    average = total_books / total_members if total_members > 0 else 0
+    return average
+
+
+def find_max_min_borrowed_books(records):
+    book_count = {}
+    for books in records.values():
+        for book in books:
+            book_count[book] = book_count.get(book, 0) + 1
+
+    if not book_count:
+        return None, None
+
+    max_borrowed = max(book_count.items(), key=lambda x: x[1])
+    min_borrowed = min(book_count.items(), key=lambda x: x[1])
+    return max_borrowed, min_borrowed
+
+
+def count_zero_borrow_members(records):
+    return sum(1 for books in records.values() if len(books) == 0)
+
+
+def find_most_frequent_book(records):
+    book_count = {}
+    for books in records.values():
+        for book in books:
+            book_count[book] = book_count.get(book, 0) + 1
+
+    if not book_count:
+        return None
+
+    max_borrow = max(book_count.values())
+    most_frequent_books = [book for book, count in book_count.items() if count == max_borrow]
+    return most_frequent_books
+
+
+print("Library Borrowing Management System\n")
+
+
+avg = compute_average_borrowed(borrow_records)
+print(f"Average books borrowed per member: {avg:.2f}")
+
+
+max_book, min_book = find_max_min_borrowed_books(borrow_records)
+if max_book and min_book:
+    print(f"Most borrowed book: {max_book[0]} ({max_book[1]} times)")
+    print(f"Least borrowed book: {min_book[0]} ({min_book[1]} times)")
+else:
+    print("No books have been borrowed.")
+
+
+zero_borrow_count = count_zero_borrow_members(borrow_records)
+print(f"Number of members who borrowed 0 books: {zero_borrow_count}")
+
+
+mode_books = find_most_frequent_book(borrow_records)
+if mode_books:
+    print("Most frequently borrowed book(s):", ", ".join(mode_books))
+else:
+    print("No books found to determine mode.")
