@@ -1,0 +1,78 @@
+CREATE DATABASE CompanyDB;
+
+USE CompanyDB;
+
+
+
+CREATE TABLE Employee (
+    Emp_ID INT PRIMARY KEY,
+    Emp_Name VARCHAR(50),
+    Salary INT
+);
+
+
+INSERT INTO Employee VALUES
+(1, 'Shruti', 30000),
+(2, 'Rahul', 40000),
+(3, 'Priya', 35000);
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE ShowEmployees()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE e_name VARCHAR(50);
+    DECLARE e_salary INT;
+
+    DECLARE emp_cursor CURSOR FOR
+    SELECT Emp_Name, Salary FROM Employee;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND
+    SET done = 1;
+
+    OPEN emp_cursor;
+
+    read_loop: LOOP
+
+        FETCH emp_cursor INTO e_name, e_salary;
+
+        IF done = 1 THEN
+            LEAVE read_loop;
+        END IF;
+
+        SELECT e_name AS Employee_Name,
+               e_salary AS Employee_Salary;
+
+    END LOOP;
+
+    CLOSE emp_cursor;
+
+END$$
+
+DELIMITER ;
+
+
+
+CALL ShowEmployees();
+
+
+
+DELIMITER $$
+
+CREATE FUNCTION AnnualSalary(monthly_salary INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    RETURN monthly_salary * 12;
+END$$
+
+DELIMITER ;
+
+
+
+SELECT Emp_Name,
+       Salary,
+       AnnualSalary(Salary) AS Annual_Salary
+FROM Employee;
