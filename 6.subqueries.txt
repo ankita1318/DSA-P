@@ -1,0 +1,85 @@
+CREATE DATABASE CompanyDB;
+
+USE CompanyDB;
+
+
+
+CREATE TABLE Department (
+    Dept_ID INT PRIMARY KEY,
+    Dept_Name VARCHAR(50)
+);
+
+CREATE TABLE Employee (
+    Emp_ID INT PRIMARY KEY,
+    Emp_Name VARCHAR(50),
+    Salary INT,
+    Dept_ID INT,
+    FOREIGN KEY (Dept_ID) REFERENCES Department(Dept_ID)
+);
+
+
+
+INSERT INTO Department VALUES
+(101, 'HR'),
+(102, 'IT'),
+(103, 'Sales');
+
+INSERT INTO Employee VALUES
+(1, 'Shruti', 30000, 101),
+(2, 'Rahul', 40000, 102),
+(3, 'Priya', 35000, 103),
+(4, 'Amit', 45000, NULL);
+
+
+
+SELECT Emp_Name, Dept_Name
+FROM Employee
+INNER JOIN Department
+ON Employee.Dept_ID = Department.Dept_ID;
+
+
+
+SELECT Emp_Name, Dept_Name
+FROM Employee
+LEFT JOIN Department
+ON Employee.Dept_ID = Department.Dept_ID;
+
+
+
+SELECT Emp_Name, Dept_Name
+FROM Employee
+RIGHT JOIN Department
+ON Employee.Dept_ID = Department.Dept_ID;
+
+
+
+SELECT Emp_Name, Dept_Name
+FROM Employee
+LEFT JOIN Department
+ON Employee.Dept_ID = Department.Dept_ID
+
+UNION
+
+SELECT Emp_Name, Dept_Name
+FROM Employee
+RIGHT JOIN Department
+ON Employee.Dept_ID = Department.Dept_ID;
+
+
+CREATE VIEW Employee_View AS
+SELECT Emp_Name, Salary
+FROM Employee;
+
+
+
+SELECT * FROM Employee_View;
+
+
+
+CREATE OR REPLACE VIEW Employee_View AS
+SELECT Emp_Name, Salary, Dept_ID
+FROM Employee;
+
+
+
+DROP VIEW Employee_View;
