@@ -1,0 +1,47 @@
+CREATE DATABASE SalesDB;
+
+USE SalesDB;
+
+CREATE TABLE Orders (
+    Order_ID INT PRIMARY KEY,
+    Customer_Name VARCHAR(50),
+    Product VARCHAR(50),
+    Quantity INT,
+    Amount INT
+);
+
+INSERT INTO Orders VALUES
+(1, 'Shruti', 'Laptop', 2, 80000),
+(2, 'Rahul', 'Mouse', 5, 5000),
+(3, 'Priya', 'Laptop', 1, 40000),
+(4, 'Amit', 'Keyboard', 3, 9000),
+(5, 'Neha', 'Mouse', 2, 2000);
+
+
+SELECT COUNT(*) AS Total_Orders
+FROM Orders;
+
+SELECT SUM(Amount) AS Total_Sales
+FROM Orders;
+
+SELECT AVG(Amount) AS Average_Sales
+FROM Orders;
+
+SELECT MAX(Amount) AS Highest_Sale
+FROM Orders;
+
+SELECT MIN(Amount) AS Lowest_Sale
+FROM Orders;
+
+
+
+SELECT Product, SUM(Amount) AS Total_Amount
+FROM Orders
+GROUP BY Product;
+
+
+
+SELECT Product, SUM(Amount) AS Total_Amount
+FROM Orders
+GROUP BY Product
+HAVING SUM(Amount) > 5000;
