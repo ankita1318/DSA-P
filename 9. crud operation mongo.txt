@@ -1,77 +1,26 @@
+// CREATE
+db.students.insertOne({
+  rollno: 1,
+  name: "Rahul",
+  marks: 85,
+  course: "BCA"
+});
 
 
-const { MongoClient } = require("mongodb");
+// READ
+db.students.find();
 
-const url = "mongodb://127.0.0.1:27017";
-const client = new MongoClient(url);
+db.students.find({ name: "Rahul" });
 
-async function run() {
-    try {
-        await client.connect();
-        console.log("Connected to MongoDB");
-
-        
-        const db = client.db("CompanyDB");
-        const collection = db.collection("Employees");
+db.students.find({ marks: { $gt: 80 } });
 
 
-
-        await collection.insertOne({
-            emp_id: 1,
-            name: "Shruti",
-            department: "IT",
-            salary: 40000
-        });
-
-        await collection.insertOne({
-            emp_id: 2,
-            name: "Rahul",
-            department: "HR",
-            salary: 35000
-        });
-
-        console.log("Documents Inserted");
-
-        
-        console.log("All Employees:");
-        let data = await collection.find().toArray();
-        console.log(data);
+// UPDATE
+db.students.updateOne(
+  { name: "Rahul" },
+  { $set: { marks: 90 } }
+);
 
 
-        console.log("Employees with salary > 30000 AND department IT:");
-        let result = await collection.find({
-            $and: [
-                { salary: { $gt: 30000 } },
-                { department: "IT" }
-            ]
-        }).toArray();
-
-        console.log(result);
-
-                await collection.updateOne(
-            { emp_id: 1 },
-            { $set: { salary: 45000 } }
-        );
-
-        console.log("Document Updated");
-        let updated = await collection.findOne({ emp_id: 1 });
-        console.log(updated);
-
-       
-        await collection.deleteOne({ emp_id: 2 });
-
-        console.log("Document Deleted");
-
-
-        console.log("Final Records:");
-        let finalData = await collection.find().toArray();
-        console.log(finalData);
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-        await client.close();
-    }
-}
-
-run();
+// DELETE
+db.students.deleteOne({ name: "Rahul" });
